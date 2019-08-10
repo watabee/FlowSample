@@ -11,6 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "RAKUTEN_APP_ID", "\"${project.RAKUTEN_APP_ID}\""
     }
     buildTypes {
         release {
