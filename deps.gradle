@@ -1,0 +1,78 @@
+ext {
+    versions = [
+        'compileSdk': 29,
+        'minSdk': 21,
+        'targetSdk': 29,
+
+        'kotlin': '1.3.41',
+        'kotlinCoroutines': '1.3.0-RC2',
+        'okhttp': '4.0.0',
+        'retrofit': '2.6.1',
+        'moshi': '1.8.0',
+
+        'timber': '4.7.1',
+
+        'appcompat': '1.1.0-rc01',
+        'activity': '1.1.0-alpha02',
+        'fragment': '1.2.0-alpha02',
+        'lifecycle': '2.2.0-alpha03',
+        'recyclerview': '1.1.0-beta02',
+        'room': '2.2.0-alpha02',
+        'core': '1.2.0-alpha03',
+
+        'groupie': '2.3.0',
+        'material': '1.1.0-alpha09',
+    ]
+
+    deps = [
+        'kotlin': [
+            'stdlib': "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+            'coroutines': [
+                'core': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
+                'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
+            ],
+        ],
+
+        'androidx': [
+            'appcompat': "androidx.appcompat:appcompat:${versions.appcompat}",
+            'activity': "androidx.activity:activity-ktx:${versions.activity}",
+            'fragment': "androidx.fragment:fragment-ktx:${versions.fragment}",
+            'recyclerview': "androidx.recyclerview:recyclerview:${versions.recyclerview}",
+            'core': "androidx.core:core-ktx:${versions.core}",
+            'constraintlayout': 'androidx.constraintlayout:constraintlayout:1.1.3',
+            'lifecycle': [
+                'extensions' : "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
+                'livedata': "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
+                'viewmodel' : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
+            ],
+            'room' : [
+                'runtime' : "androidx.room:room-runtime:${versions.room}",
+                'compiler' : "androidx.room:room-compiler:${versions.room}",
+            ],
+        ],
+
+        'okhttp' : [
+            'core' : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+            'logging' : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+        ],
+
+        'retrofit' : [
+            'core' : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+            'converter' : "com.squareup.retrofit2:converter-moshi:${versions.retrofit}",
+        ],
+
+        'moshi' : [
+            'kotlin' : "com.squareup.moshi:moshi-kotlin:${versions.moshi}",
+            'codegen' : "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}",
+        ],
+
+        'groupie' : [
+            'core' : "com.xwray:groupie:${versions.groupie}",
+            'databinding' : "com.xwray:groupie-databinding:${versions.groupie}",
+        ],
+
+        'material' : "com.google.android.material:material:${versions.material}",
+
+        'timber': "com.jakewharton.timber:timber:${versions.timber}",
+    ]
+}
