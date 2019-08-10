@@ -26,8 +26,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled true
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
     }
 }
 
