@@ -43,6 +43,7 @@ dependencies {
     implementation deps.androidx.recyclerview
     implementation deps.androidx.core
     implementation deps.androidx.constraintlayout
+    implementation deps.androidx.swiperefreshlayout
     implementation deps.material
 
     implementation deps.androidx.lifecycle.extensions
@@ -66,7 +67,9 @@ dependencies {
     kapt deps.moshi.codegen
 
     implementation deps.groupie.core
-    implementation deps.groupie.databinding
 
     implementation deps.timber
+
+    implementation deps.glide.core
+    kapt deps.glide.compiler
 }
