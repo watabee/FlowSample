@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FlowSample</string>
+
+    <string name="retry">Retry</string>
+
+    <string name="error_message">An error has occurred.</string>
 </resources>
