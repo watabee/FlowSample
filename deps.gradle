@@ -50,7 +50,7 @@ ext {
                 'viewmodel' : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}",
             ],
             'room' : [
-                'runtime' : "androidx.room:room-runtime:${versions.room}",
+                'runtime' : "androidx.room:room-ktx:${versions.room}",
                 'compiler' : "androidx.room:room-compiler:${versions.room}",
             ],
         ],

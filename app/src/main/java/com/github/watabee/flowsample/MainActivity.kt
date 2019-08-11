@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewModel.state.observe(this) { state: MainViewState ->
 
-            adapter.update(state.rankingItemStates.map(::RankingItem))
+            adapter.update(
+                state.rankingItemStates
+                    .map { RankingItem(it) { state -> viewModel.toggleFavorite(state) } }
+            )
             swipeRefreshLayout.isRefreshing = state.isLoading
 
             if (state.isError) {

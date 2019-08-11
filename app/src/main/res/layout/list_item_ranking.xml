@@ -45,11 +45,23 @@
         style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintLeft_toLeftOf="@id/item_name_text"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/favorite_button"
         app:layout_constraintTop_toBottomOf="@id/item_price_text"
         tools:text="タマチャンショップ" />
+
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/favorite_state"
+        app:layout_constraintBottom_toBottomOf="@id/shop_name_text"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/shop_name_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
