@@ -7,7 +7,6 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.github.watabee.flowsample.api.RankingDataSource
 import com.github.watabee.flowsample.api.RankingResponse
-import com.github.watabee.flowsample.db.AppDatabase
 import com.github.watabee.flowsample.db.FavoriteItem
 import com.github.watabee.flowsample.db.FavoriteItemDao
 import kotlinx.coroutines.Dispatchers
@@ -24,27 +23,27 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @UseExperimental(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class RankingItemsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val favoriteItemDao: FavoriteItemDao =
-        AppDatabase.getInstance(application).favoriteItemDao()
+    private val favoriteItemDao: FavoriteItemDao = (application as FlowSampleApp).favoriteItemDao
+
     private val rankingRepository = RankingDataSource(application)
     private val requestEvent = ConflatedBroadcastChannel<Unit>()
 
-    val state: LiveData<MainViewState>
+    val state: LiveData<RankingViewState>
 
     init {
         state = liveData {
             requestEvent.asFlow()
-                .onEach { emit(MainViewState(isLoading = true)) }
+                .onEach { emit(RankingViewState(isLoading = true)) }
                 .flatMapLatest {
                     rankingRepository.findRankingItems()
                         .combine(favoriteItemDao.findAllItemCodes()) { rankingResponse, favoriteItemCodes ->
-                            MainViewState(
-                                rankingResponse.items.toRankingItemStates(favoriteItemCodes)
+                            RankingViewState(
+                                rankingResponse.items.toItemStates(favoriteItemCodes)
                             )
                         }
-                        .catch { emit(MainViewState(isError = true)) }
+                        .catch { emit(RankingViewState(isError = true)) }
                         .flowOn(Dispatchers.IO)
                 }
                 .collect { emit(it) }
@@ -55,7 +54,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun findRankingItems() = requestEvent.offer(Unit)
 
-    fun toggleFavorite(state: RankingItemState) {
+    fun toggleFavorite(state: ItemState) {
         viewModelScope.launch(Dispatchers.IO) {
             favoriteItemDao.toggle(
                 FavoriteItem(
@@ -69,11 +68,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun List<RankingResponse.Item>.toRankingItemStates(
+    private fun List<RankingResponse.Item>.toItemStates(
         favoriteItemCodes: List<String>
-    ): List<RankingItemState> =
+    ): List<ItemState> =
         map {
-            RankingItemState(
+            ItemState(
                 itemCode = it.itemCode,
                 imageUrl = it.mediumImageUrls.firstOrNull() ?: it.smallImageUrls.firstOrNull(),
                 itemName = it.itemName,
@@ -83,4 +82,3 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
 }
-

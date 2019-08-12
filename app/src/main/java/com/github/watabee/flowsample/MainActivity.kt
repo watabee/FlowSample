@@ -1,57 +1,49 @@
 package com.github.watabee.flowsample
 
+import android.content.res.Resources
 import android.os.Bundle
-import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.snackbar.Snackbar
-import com.xwray.groupie.GroupAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
-    private val viewModel: MainViewModel by viewModels()
-    private val adapter = GroupAdapter<RankingViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var snackbar: Snackbar? = null
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        viewPager.adapter = Adapter(supportFragmentManager, resources)
 
-        fun retry() {
-            snackbar?.dismiss()
-            snackbar = null
+        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+        tabLayout.setupWithViewPager(viewPager)
+    }
 
-            viewModel.findRankingItems()
+    private class Adapter(
+        fragmentManager: FragmentManager,
+        private val resources: Resources
+    ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        override fun getItem(position: Int): Fragment = when (Page.valueOf(position)) {
+            Page.RANKING -> RankingItemsFragment.newInstance()
+            Page.FAVORITE -> FavoriteItemsFragment.newInstance()
         }
 
-        val swipeRefreshLayout: SwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
-        swipeRefreshLayout.setOnRefreshListener { retry() }
+        override fun getCount(): Int = Page.values().size
 
-        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
-        recyclerView.adapter = adapter
+        override fun getPageTitle(position: Int): CharSequence? {
+            return resources.getString(Page.valueOf(position).titleResId)
+        }
+    }
 
-        viewModel.state.observe(this) { state: MainViewState ->
+    private enum class Page(@StringRes val titleResId: Int) {
+        RANKING(R.string.ranking), FAVORITE(R.string.favorite);
 
-            adapter.update(
-                state.rankingItemStates
-                    .map { RankingItem(it) { state -> viewModel.toggleFavorite(state) } }
-            )
-            swipeRefreshLayout.isRefreshing = state.isLoading
-
-            if (state.isError) {
-                snackbar = Snackbar.make(
-                    findViewById(android.R.id.content),
-                    R.string.error_message,
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(R.string.retry) { retry() }
-                    .apply { show() }
-            }
+        companion object {
+            fun valueOf(index: Int): Page =
+                values().getOrNull(index) ?: throw IllegalArgumentException()
         }
     }
 }
