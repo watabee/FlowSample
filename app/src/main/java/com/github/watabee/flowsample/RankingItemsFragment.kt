@@ -30,6 +30,7 @@ class RankingItemsFragment : Fragment(R.layout.fragment_ranking_items) {
 
         val swipeRefreshLayout: SwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         swipeRefreshLayout.setOnRefreshListener { retry() }
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.setHasFixedSize(true)
